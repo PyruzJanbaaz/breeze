@@ -21,5 +21,4 @@ contract Projects {
     function getProjectById(uint _projectId) public view returns(Project memory project){
       return  projects[_projectId];
     }
-    
 }
