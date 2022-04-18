@@ -15,10 +15,14 @@ contract Projects {
         Project storage project = projects[projectId];
         project.title = _title;
         project.createDate = block.timestamp;
-        projectIds.push(projectId++);
+        projectIds.push(++projectId);
     }
 
     function getProjectById(uint _projectId) public view returns(Project memory project){
       return  projects[_projectId];
+    }
+
+    function getProjectsCount()public view returns(uint count){
+        return projectIds.length;
     }
 }
