@@ -39,36 +39,6 @@ contract Teams {
         return project_team[_projectId];
     }
 
-    function findTeamIndexById(uint _teamId)internal view returns(uint) {
-        uint index = 0;
-        while (teamIds[index] != _teamId) {
-            index++;
-        }
-        return index;
-    }    
-
-    function findTeamIdByIndex(uint _teamIndex) public view returns(uint teamId){
-        return teamIds[_teamIndex];
-    }
-
-    function getTeamsCount() public view returns(uint count){
-        return teamIds.length;
-    }
-
-    function deleteTeam(uint _teamId) public ownerOnly{
-		delete teams[_teamId];
-		deleteTeamIdByShifting(_teamId);
-	}
-
-	function deleteTeamIdByShifting(uint _teamId) internal ownerOnly{
-		uint _index = findTeamIndexById(_teamId);
-		require (_index < teamIds.length , "Array index out of bound!");
-		for(uint i = _index; i < teamIds.length -1; i++){
-			teamIds[i] = teamIds[i + 1];
-		}
-		teamIds.pop();
-	}
-
     function updateTeamTitle(uint _teamId,string memory _title) public ownerOnly{
         teams[_teamId].title = _title;
     }
