@@ -14,7 +14,9 @@ contract ('Teams', accounts =>{
     });
 
     it('update a team title', async ()=> {
-        
+        await contractInstance.updateTeamTitle(1,'Team.1.2');
+        const teamTitle = (await contractInstance.getTeamById(1)).title;
+        assert.equal(teamTitle , 'Team.1.2');
     });
 
     it('delete a team', async ()=>{
