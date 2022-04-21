@@ -5,7 +5,6 @@ contract Teams {
 
     address public owner;
     uint  teamId;
-    uint[] teamIds;
     struct Team{
         uint projectId;
         uint createDate;
@@ -41,6 +40,23 @@ contract Teams {
 
     function updateTeamTitle(uint _teamId,string memory _title) public ownerOnly{
         teams[_teamId].title = _title;
+    }
+
+    function findTeamIndexById(uint[] memory _teamIds, uint _teamId)internal view returns(uint) {
+        uint index = 0;
+        while (_teamIds[index] != _teamId) {
+            index++;
+        }
+        return index;
+    }
+
+    function deleteTeam(uint _projectId, uint _temaId) public ownerOnly {
+        uint[] storage teamIds = project_team[_projectId];
+        uint  _index = findTeamIndexById(teamIds, _temaId);
+        for(uint i = _index; i < teamIds.length -1; i++){
+			teamIds[i] = teamIds[i + 1];
+		}
+		teamIds.pop();
     }
 
 }
