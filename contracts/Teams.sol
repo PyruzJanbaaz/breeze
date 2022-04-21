@@ -42,7 +42,7 @@ contract Teams {
         teams[_teamId].title = _title;
     }
 
-    function findTeamIndexById(uint[] memory _teamIds, uint _teamId)internal view returns(uint) {
+    function findTeamIndexById(uint[] memory _teamIds, uint _teamId) internal view returns(uint) {
         uint index = 0;
         while (_teamIds[index] != _teamId) {
             index++;
@@ -51,6 +51,11 @@ contract Teams {
     }
 
     function deleteTeam(uint _projectId, uint _temaId) public ownerOnly {
+        delete teams[_temaId];
+        deleteTeamByShifting(_projectId, _temaId);
+    }
+
+    function deleteTeamByShifting(uint _projectId, uint _temaId) internal ownerOnly {
         uint[] storage teamIds = project_team[_projectId];
         uint  _index = findTeamIndexById(teamIds, _temaId);
         for(uint i = _index; i < teamIds.length -1; i++){
