@@ -2,8 +2,11 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import './Breeze.sol';
+import '../libraries/ArraysUtility.sol';
 
 contract Projects is Breeze {
+
+    using ArraysUtility for *;
 
     uint  projectId;
     uint[] projectIds;
@@ -21,14 +24,6 @@ contract Projects is Breeze {
         project.title = _title;
         project.createDate = block.timestamp;
         projectIds.push(projectId);
-    }
-
-    function findProjectIndexById(uint _projectId)internal view returns(uint) {
-        uint index = 0;
-        while (projectIds[index] != _projectId) {
-            index++;
-        }
-        return index;
     }
 
     function findProjectIdByIndex(uint _projectIndex) public view returns(uint projectId){
@@ -49,7 +44,7 @@ contract Projects is Breeze {
 	}
 
 	function deleteProjectIdByShifting(uint _projectId) internal ownerOnly{
-		uint _index = findProjectIndexById(_projectId);
+		uint _index = projectIds.findIndexById(_projectId);
 		require (_index < projectIds.length , "Array index out of bound!");
 		for(uint i = _index; i < projectIds.length -1; i++){
 			projectIds[i] = projectIds[i + 1];
