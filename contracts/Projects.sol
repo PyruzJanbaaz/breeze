@@ -26,10 +26,6 @@ contract Projects is Breeze {
         projectIds.push(projectId);
     }
 
-    function findProjectIdByIndex(uint _projectIndex) public view returns(uint projectId){
-        return projectIds[_projectIndex];
-    }
-
     function getProjectById(uint _projectId) public view returns(Project memory project){
       return  projects[_projectId];
     }
@@ -43,13 +39,13 @@ contract Projects is Breeze {
 		deleteProjectIdByShifting(_projectId);
 	}
 
+    function findProjectIdByIndex(uint _index) public view returns(uint projectId){
+        return projectIds.findIdByIndex(_index);
+    }
+
 	function deleteProjectIdByShifting(uint _projectId) internal ownerOnly{
 		uint _index = projectIds.findIndexById(_projectId);
-		require (_index < projectIds.length , "Array index out of bound!");
-		for(uint i = _index; i < projectIds.length -1; i++){
-			projectIds[i] = projectIds[i + 1];
-		}
-		projectIds.pop();
+        projectIds.deleteItemByIndex(_index);
 	}
 
 }
