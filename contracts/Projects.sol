@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-contract Projects {
+import './Breeze.sol';
 
-    address public owner;
+contract Projects is Breeze {
+
     uint  projectId;
     uint[] projectIds;
     struct Project{
@@ -12,13 +13,7 @@ contract Projects {
     }
     mapping(uint => Project) projects;
 
-	constructor(){
-		owner = msg.sender;
-	}
-
-	modifier ownerOnly(){
-		require (msg.sender == owner , "You do not have permission for this action!");
-		_;
+	constructor() Breeze(msg.sender) {
 	}
 
     function addNewProject(string memory _title) public {

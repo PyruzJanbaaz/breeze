@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-contract Teams {
+import './Breeze.sol';
 
-    address public owner;
+contract Teams is Breeze {
+
     uint  teamId;
     struct Team{
         uint projectId;
@@ -13,13 +14,7 @@ contract Teams {
     mapping(uint => Team) teams;
     mapping(uint => uint[]) project_team;
 
-    constructor(){
-		owner = msg.sender;
-	}
-
-	modifier ownerOnly(){
-		require (msg.sender == owner , "You do not have permission for this action!");
-		_;
+    constructor() Breeze(msg.sender){
 	}
 
     function addNewTeam(uint _projectId, string memory _title) public {
