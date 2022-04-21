@@ -59,4 +59,8 @@ contract Teams {
 		teamIds.pop();
     }
 
+    function getTeamsCount(uint _projectId, uint _temaId) public view returns(uint count){
+        return project_team[_projectId].length;
+    } 
+
 }
