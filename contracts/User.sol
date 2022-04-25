@@ -54,7 +54,7 @@ contract Users is Breeze{
 	}
 
 	function deleteUserAddressByShifting(address _userAddress) internal ownerOnly{
-		uint _index = userAddresses.findIndexById(_userAddress);
+		uint _index = userAddresses.findIndexByValue(_userAddress);
         userAddresses.deleteItemByIndex(_index);
 	}
 

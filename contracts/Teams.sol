@@ -47,7 +47,7 @@ contract Teams is Breeze {
 
     function deleteTeamByShifting(uint _projectId, uint _temaId) internal ownerOnly {
         uint[] storage teamIds = project_team[_projectId];
-		uint _index = teamIds.findIndexById(_temaId);
+		uint _index = teamIds.findIndexByValue(_temaId);
         teamIds.deleteItemByIndex(_index);
     }
 

@@ -40,11 +40,11 @@ contract Projects is Breeze {
 	}
 
     function findProjectIdByIndex(uint _index) public view returns(uint id){
-        return projectIds.findIdByIndex(_index);
+        return projectIds.findValueByIndex(_index);
     }
 
 	function deleteProjectIdByShifting(uint _projectId) internal ownerOnly{
-		uint _index = projectIds.findIndexById(_projectId);
+		uint _index = projectIds.findIndexByValue(_projectId);
         projectIds.deleteItemByIndex(_index);
 	}
 
