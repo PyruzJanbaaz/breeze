@@ -11,6 +11,14 @@ library ArraysUtility{
         return index;
     }
 
+    function findIndexById(address[] memory _array, address _address) internal pure returns(uint) {
+        uint index = 0;
+        while (_array[index] != _address) {
+            index++;
+        }
+        return index;
+    }
+
 	function findIdByIndex(uint[] memory _array, uint _index) internal pure returns(uint) {
         return _array[_index];
     }
@@ -23,5 +31,12 @@ library ArraysUtility{
 		_array.pop();
 	}
 
+	function deleteItemByIndex(address[]  storage _array, uint _index) internal {
+		require (_index < _array.length , "Array index out of bound!");
+		for(uint i = _index; i < _array.length -1; i++){
+			_array[i] = _array[i + 1];
+		}
+		_array.pop();
+	}
 	
 }
