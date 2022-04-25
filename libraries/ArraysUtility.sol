@@ -3,7 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 library ArraysUtility{
 
-    function findIndexById(uint[] memory _array, uint _id) internal view returns(uint) {
+    function findIndexById(uint[] memory _array, uint _id) internal pure returns(uint) {
         uint index = 0;
         while (_array[index] != _id) {
             index++;
@@ -11,7 +11,7 @@ library ArraysUtility{
         return index;
     }
 
-	function findIdByIndex(uint[] memory _array, uint _index) internal view returns(uint) {
+	function findIdByIndex(uint[] memory _array, uint _index) internal pure returns(uint) {
         return _array[_index];
     }
 

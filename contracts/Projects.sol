@@ -39,7 +39,7 @@ contract Projects is Breeze {
 		deleteProjectIdByShifting(_projectId);
 	}
 
-    function findProjectIdByIndex(uint _index) public view returns(uint projectId){
+    function findProjectIdByIndex(uint _index) public view returns(uint id){
         return projectIds.findIdByIndex(_index);
     }
 

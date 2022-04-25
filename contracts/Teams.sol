@@ -2,8 +2,11 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import './Breeze.sol';
+import '../libraries/ArraysUtility.sol';
 
 contract Teams is Breeze {
+
+    using ArraysUtility for *;
 
     uint  teamId;
     struct Team{
@@ -37,14 +40,6 @@ contract Teams is Breeze {
         teams[_teamId].title = _title;
     }
 
-    function findTeamIndexById(uint[] memory _teamIds, uint _teamId) internal view returns(uint) {
-        uint index = 0;
-        while (_teamIds[index] != _teamId) {
-            index++;
-        }
-        return index;
-    }
-
     function deleteTeam(uint _projectId, uint _temaId) public ownerOnly {
         delete teams[_temaId];
         deleteTeamByShifting(_projectId, _temaId);
@@ -52,11 +47,8 @@ contract Teams is Breeze {
 
     function deleteTeamByShifting(uint _projectId, uint _temaId) internal ownerOnly {
         uint[] storage teamIds = project_team[_projectId];
-        uint  _index = findTeamIndexById(teamIds, _temaId);
-        for(uint i = _index; i < teamIds.length -1; i++){
-			teamIds[i] = teamIds[i + 1];
-		}
-		teamIds.pop();
+		uint _index = teamIds.findIndexById(_temaId);
+        teamIds.deleteItemByIndex(_index);
     }
 
     function getTeamsCount(uint _projectId) public view returns(uint count){
