@@ -5,6 +5,7 @@ library ArraysUtility{
 
     function findIndexByValue(uint[] memory _array, uint _id) internal pure returns(uint) {
         uint index = 0;
+        require (_array.length > 0 , "Array is empty!");
         while (_array[index] != _id) {
             index++;
         }
@@ -13,6 +14,7 @@ library ArraysUtility{
 
     function findIndexByValue(address[] memory _array, address _address) internal pure returns(uint) {
         uint index = 0;
+        require (_array.length > 0 , "Array is empty!");
         while (_array[index] != _address) {
             index++;
         }
@@ -20,6 +22,7 @@ library ArraysUtility{
     }
 
 	function findValueByIndex(uint[] memory _array, uint _index) internal pure returns(uint) {
+        require (_array.length > 0 , "Array is empty!");       
         return _array[_index];
     }
 

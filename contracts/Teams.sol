@@ -58,17 +58,17 @@ contract Teams is Breeze {
 
     function assignUserToTeam(uint _teamId, address _userAddress) public ownerOnly{
 		require (teams[_teamId].teamMembers.length <= 10 , "The maximum number of team members is 10!");  
-        require (teams[_teamId].teamMembers.findIndexByValue(_userAddress) > 0 , "User is alredy exist!");  
+        if(teams[_teamId].teamMembers.length > 0)
+            require (teams[_teamId].teamMembers.findIndexByValue(_userAddress) >= 0 , "User is alredy exist!");  
         teams[_teamId].teamMembers.push(_userAddress);
-
     }
 
-    function unAssignUserFromTeam(uint _teamId, address _userAddress) public ownerOnly{
+    function unassignUserFromTeam(uint _teamId, address _userAddress) public ownerOnly{
         uint _index = teams[_teamId].teamMembers.findIndexByValue(_userAddress);
         teams[_teamId].teamMembers.deleteItemByIndex(_index);
     }
 
-    function getTeamMemberscount(uint _teamId) public view returns(uint count) {
+    function getTeamMembersCount(uint _teamId) public view returns(uint count) {
         return teams[_teamId].teamMembers.length;
     }
 
