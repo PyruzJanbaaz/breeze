@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 import './Breeze.sol';
 import '../libraries/ArraysUtility.sol';
 
-contract Users is Breeze{
+contract Users is Breeze {
 
     using ArraysUtility for *;
 

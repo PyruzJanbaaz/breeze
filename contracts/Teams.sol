@@ -8,14 +8,15 @@ contract Teams is Breeze {
 
     using ArraysUtility for *;
 
-    uint  teamId;
+    uint teamId;
     struct Team{
         uint projectId;
         uint createDate;
         string title;
+        address[] teamMembers;
     }
     mapping(uint => Team) teams;
-    mapping(uint => uint[]) project_team;
+    mapping(uint => uint[]) projectTeams;
 
     constructor() Breeze(msg.sender){
 	}
@@ -25,15 +26,15 @@ contract Teams is Breeze {
         team.title = _title;
         team.projectId = _projectId;
         team.createDate = block.timestamp;
-        project_team[_projectId].push(teamId);
+        projectTeams[_projectId].push(teamId);
     }
 
-    function getTeamById(uint _teamId) public view returns(Team memory team){
-      return  teams[_teamId];
+    function getTeamById(uint _teamId) public view returns(uint projectId, uint createDate, string memory title){
+      return  (teams[_teamId].projectId , teams[_teamId].createDate ,teams[_teamId].title);
     }
     
     function getTeamIdByProjectId(uint _projectId) public view returns(uint[] memory _teamIds){
-        return project_team[_projectId];
+        return projectTeams[_projectId];
     }
 
     function updateTeamTitle(uint _teamId,string memory _title) public ownerOnly{
@@ -46,13 +47,29 @@ contract Teams is Breeze {
     }
 
     function deleteTeamByShifting(uint _projectId, uint _temaId) internal ownerOnly {
-        uint[] storage teamIds = project_team[_projectId];
+        uint[] storage teamIds = projectTeams[_projectId];
 		uint _index = teamIds.findIndexByValue(_temaId);
         teamIds.deleteItemByIndex(_index);
     }
 
     function getTeamsCount(uint _projectId) public view returns(uint count){
-        return project_team[_projectId].length;
+        return projectTeams[_projectId].length;
     } 
+
+    function assignUserToTeam(uint _teamId, address _userAddress) public ownerOnly{
+		require (teams[_teamId].teamMembers.length <= 10 , "The maximum number of team members is 10!");  
+        require (teams[_teamId].teamMembers.findIndexByValue(_userAddress) > 0 , "User is alredy exist!");  
+        teams[_teamId].teamMembers.push(_userAddress);
+
+    }
+
+    function unAssignUserFromTeam(uint _teamId, address _userAddress) public ownerOnly{
+        uint _index = teams[_teamId].teamMembers.findIndexByValue(_userAddress);
+        teams[_teamId].teamMembers.deleteItemByIndex(_index);
+    }
+
+    function getTeamMemberscount(uint _teamId) public view returns(uint count) {
+        return teams[_teamId].teamMembers.length;
+    }
 
 }
