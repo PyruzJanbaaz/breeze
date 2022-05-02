@@ -7,7 +7,6 @@ contract('Users',  accounts => {
 		contractInstance = await Users.deployed();
 	});
 
-
 	it('register user', async ()=> {
 		let userCount  = parseInt(await contractInstance.getUserCount());
 		await contractInstance.register('Pyruz', 'Janbaz','avatar.png');
