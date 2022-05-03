@@ -8,11 +8,26 @@ contract Projects is Breeze {
 
     using ArraysUtility for *;
 
+    enum TaskStatus {
+        TODO,
+        DOING,
+        REVIEW,
+        DONE
+    }
+    struct Task {
+        string title;
+        string description;
+        uint createDate;
+        address assignee;
+        address assigner;
+        TaskStatus taskStatus;
+    }
     uint  projectId;
-    uint[] projectIds;
+    uint[] projectIds;    
     struct Project{
         uint createDate;
         string title;
+        mapping(uint => Task) tasks;
     }
     mapping(uint => Project) projects;
 
@@ -26,8 +41,8 @@ contract Projects is Breeze {
         projectIds.push(projectId);
     }
 
-    function getProjectById(uint _projectId) public view returns(Project memory project){
-      return  projects[_projectId];
+    function getProjectById(uint _projectId) public view returns(uint id, string memory title, uint createDate){
+      return  (_projectId, projects[_projectId].title , projects[_projectId].createDate);
     }
 
     function getProjectsCount() public view returns(uint count){
@@ -39,7 +54,7 @@ contract Projects is Breeze {
 		deleteProjectIdByShifting(_projectId);
 	}
 
-    function findProjectIdByIndex(uint _index) public view returns(uint id){
+    function getProjectIdByIndex(uint _index) public view returns(uint id){
         return projectIds.findValueByIndex(_index);
     }
 

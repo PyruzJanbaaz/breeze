@@ -15,7 +15,7 @@ contract ('Projects', accounts =>{
 
     it('delete a project', async ()=>{
         let projectsCount = await contractInstance.getProjectsCount();
-        await contractInstance.deleteProject(await contractInstance.findProjectIdByIndex(projectsCount -1));
+        await contractInstance.deleteProject(await contractInstance.getProjectIdByIndex(projectsCount -1));
         assert.equal(--projectsCount, parseInt(await contractInstance.getProjectsCount()));
     });
 
