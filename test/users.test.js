@@ -3,6 +3,12 @@ const Users = artifacts.require("Users");
 contract('Users',  accounts => {
 
 	let contractInstance = null;
+	const UserStatus = {
+		ACTIVE: 0, 
+		INACTIVE: 1, 
+		LOCKED: 2, 
+		PENDING:3 
+    };
 	before(async ()=>{
 		contractInstance = await Users.deployed();
 	});
@@ -16,7 +22,7 @@ contract('Users',  accounts => {
 	it('active user status', async ()=> {
 		await contractInstance.activeUserStatus(accounts[0]);
 		const userStatus = (await contractInstance.getUser(accounts[0])).status;		
-		assert.equal(userStatus , '0');
+		assert.equal(userStatus , UserStatus.ACTIVE);
 	});
 
 	it('delete user', async ()=>{
