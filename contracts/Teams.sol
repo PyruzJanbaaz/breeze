@@ -21,7 +21,7 @@ contract Teams is Breeze {
     constructor() Breeze(msg.sender){
 	}
 
-    function addNewTeam(uint _projectId, string memory _title) public {
+    function addNewTeam(uint _projectId, string memory _title) public ownerOnly{
         Team storage team = teams[++teamId];
         team.title = _title;
         team.projectId = _projectId;
