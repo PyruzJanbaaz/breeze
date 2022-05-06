@@ -74,7 +74,7 @@ contract Projects is Breeze {
             doneTaskStatus(_projectId, _taskId);
 	}
 
-    function changeTaskStatusInternal(uint _projectId, uint _taskId, TaskStatus _status) internal {
+    function changeTaskStatusInternal(uint _projectId, uint _taskId, TaskStatus _status) internal{
         projects[_projectId].tasks[_taskId].status = _status;
     }
 

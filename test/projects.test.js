@@ -29,6 +29,11 @@ contract ('Projects', accounts =>{
         assert.equal((await contractInstance.getTaskById(1,1)).title, 'updated title');
     });
 
+    it('assign a task to a memeber', async ()=> {
+        await contractInstance.assignTask(1,1, accounts[1]);
+        assert.equal((await contractInstance.getTaskById(1,1)).assignee , accounts[1]);
+    });
+
     it('change a task status', async ()=> {
         await contractInstance.changeTaskStatus(1,1,TaskStatus.DOING);
         assert.equal((await contractInstance.getTaskById(1,1)).status, TaskStatus.DOING);
