@@ -39,6 +39,11 @@ contract ('Projects', accounts =>{
         assert.equal((await contractInstance.getTaskById(1,1)).status, TaskStatus.DOING);
     });
 
+    it('done a task status', async ()=> {
+        await contractInstance.changeTaskStatus(1,1,TaskStatus.DONE);
+        assert.equal((await contractInstance.getTaskById(1,1)).status, TaskStatus.DONE);
+    });
+
     it('delete a task from the project', async ()=> {
         await contractInstance.deleteTaskById(1,1);
         assert.equal((await contractInstance.getTaskById(1,1)).title, '');
