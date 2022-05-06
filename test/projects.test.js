@@ -20,12 +20,12 @@ contract ('Projects', accounts =>{
     });
 
     it('add new task on the project', async ()=> {
-        await contractInstance.addNewTask(1 , 'task title' , 'task description');
+        await contractInstance.addNewTask(1 , 'task title' , 'task description', 200);
         assert.equal((await contractInstance.getTaskById(1,1)).title, 'task title');
     });
 
     it('updte a task on the project', async ()=> {
-        await contractInstance.updateTask(1,1,'updated title', 'descriptoin');
+        await contractInstance.updateTask(1,1,'updated title', 'descriptoin', 200);
         assert.equal((await contractInstance.getTaskById(1,1)).title, 'updated title');
     });
 
