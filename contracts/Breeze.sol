@@ -10,7 +10,7 @@ contract Breeze {
     }
 
     modifier ownerOnly(){
-		require (msg.sender == owner , "You do not have permission for this action!");
+		require (msg.sender == owner , "You do not have permission to do this action!");
 		_;
 	}
 

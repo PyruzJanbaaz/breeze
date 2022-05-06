@@ -20,6 +20,7 @@ contract Projects is Breeze {
         string description;
         uint createDate;
         uint updateDate;
+        uint amount;
         address assignee;
         address assigner;
         TaskStatus status;
@@ -43,24 +44,37 @@ contract Projects is Breeze {
         projectIds.push(projectId);
     }
 
-    function addNewTask(uint _projectId, string memory _title, string memory _description) public ownerOnly{
+    function addNewTask(uint _projectId, string memory _title, string memory _description, uint _amount) public ownerOnly{
         Task storage task = projects[_projectId].tasks[++taskId];
         task.assigner = owner;
         task.title = _title;
         task.description = _description;
+        task.amount = _amount;
         task.status = TaskStatus.DOING;
         task.createDate = block.timestamp;
     }
 
-    function updateTask(uint _projectId, uint _taskId, string memory _title, string memory _description) public ownerOnly{
+    function updateTask(uint _projectId, uint _taskId, string memory _title, string memory _description, uint _amount) public ownerOnly{
         projects[_projectId].tasks[_taskId].title = _title;
         projects[_projectId].tasks[_taskId].description = _description;
+        projects[_projectId].tasks[_taskId].amount = _amount;
         projects[_projectId].tasks[_taskId].updateDate = block.timestamp;
     }
 
     function changeTaskStatus(uint _projectId, uint _taskId, TaskStatus _status) public{
-		projects[_projectId].tasks[_taskId].status = _status;
+        if(_status != TaskStatus.DONE) 
+            changeTaskStatusInternal(_projectId,_taskId, _status);
+        else 
+            doneTaskStatus(_projectId, _taskId);
 	}
+
+    function changeTaskStatusInternal(uint _projectId, uint _taskId, TaskStatus _status) internal {
+        projects[_projectId].tasks[_taskId].status = _status;
+    }
+
+    function doneTaskStatus(uint _projectId, uint _taskId) internal ownerOnly{
+        changeTaskStatusInternal(_projectId,_taskId,TaskStatus.DONE);
+    }
 
     function deleteTaskById(uint _projectId, uint _taskId) public ownerOnly{
         delete projects[_projectId].tasks[_taskId];
