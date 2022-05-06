@@ -61,6 +61,12 @@ contract Projects is Breeze {
         projects[_projectId].tasks[_taskId].updateDate = block.timestamp;
     }
 
+    function assignTask(uint _projectId, uint _taskId, address _assignee) public{
+        projects[_projectId].tasks[_taskId].assignee = _assignee;
+        projects[_projectId].tasks[_taskId].assigner = msg.sender;
+        projects[_projectId].tasks[_taskId].updateDate = block.timestamp;
+    }
+
     function changeTaskStatus(uint _projectId, uint _taskId, TaskStatus _status) public{
         if(_status != TaskStatus.DONE) 
             changeTaskStatusInternal(_projectId,_taskId, _status);
@@ -74,6 +80,9 @@ contract Projects is Breeze {
 
     function doneTaskStatus(uint _projectId, uint _taskId) internal ownerOnly{
         changeTaskStatusInternal(_projectId,_taskId,TaskStatus.DONE);
+        Task memory currentTask = getTaskById(_projectId, _taskId);
+        address payable recipient = payable(currentTask.assignee);
+        recipient.transfer(currentTask.amount);
     }
 
     function deleteTaskById(uint _projectId, uint _taskId) public ownerOnly{
