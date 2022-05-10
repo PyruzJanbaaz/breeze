@@ -1,19 +1,16 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.9.0;
+pragma solidity >=0.7.0 <0.9.0;
 
-contract Migrations {
-  address public owner = msg.sender;
+import './Breeze.sol';
+
+contract Migrations is Breeze{
+
   uint public last_completed_migration;
 
-  modifier restricted() {
-    require(
-      msg.sender == owner,
-      "This function is restricted to the contract's owner"
-    );
-    _;
+  constructor() Breeze(msg.sender) {
   }
 
-  function setCompleted(uint completed) public restricted {
+  function setCompleted(uint completed) public ownerOnly {
     last_completed_migration = completed;
   }
 

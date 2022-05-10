@@ -31,6 +31,7 @@ contract Projects is Breeze {
         uint createDate;
         string title;
         mapping(uint => Task) tasks;
+        mapping(uint => string) budgets;
     }
     mapping(uint => Project) projects;
 
@@ -42,6 +43,10 @@ contract Projects is Breeze {
         project.title = _title;
         project.createDate = block.timestamp;
         projectIds.push(projectId);
+    }
+
+    function increaseBudget(uint _projectId , string memory _description) public payable {
+        projects[_projectId].budgets[msg.value] = _description;
     }
 
     function addNewTask(uint _projectId, string memory _title, string memory _description, uint _amount) public ownerOnly{
@@ -69,20 +74,20 @@ contract Projects is Breeze {
 
     function changeTaskStatus(uint _projectId, uint _taskId, TaskStatus _status) public{
         if(_status != TaskStatus.DONE) 
-            changeTaskStatusInternal(_projectId,_taskId, _status);
+            changeTaskStatusAction(_projectId,_taskId, _status);
         else 
             doneTaskStatus(_projectId, _taskId);
 	}
 
-    function changeTaskStatusInternal(uint _projectId, uint _taskId, TaskStatus _status) internal {
+    function changeTaskStatusAction(uint _projectId, uint _taskId, TaskStatus _status) internal {
         projects[_projectId].tasks[_taskId].status = _status;
     }
 
     function doneTaskStatus(uint _projectId, uint _taskId) internal ownerOnly{
-        changeTaskStatusInternal(_projectId,_taskId,TaskStatus.DONE);
+        changeTaskStatusAction(_projectId,_taskId,TaskStatus.DONE);
         Task memory currentTask = getTaskById(_projectId, _taskId);
-        address payable recipient = payable(currentTask.assignee);
-        recipient.transfer(currentTask.amount);
+        (bool success, ) = currentTask.assignee.call{value: currentTask.amount}("");
+        require(success, "Transfer failed!");
     }
 
     function deleteTaskById(uint _projectId, uint _taskId) public ownerOnly{
