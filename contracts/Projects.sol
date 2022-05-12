@@ -4,6 +4,22 @@ pragma solidity >=0.7.0 <0.9.0;
 import './Breeze.sol';
 import '../libraries/ArraysUtility.sol';
 
+
+contract ProjectsFactory {
+
+    Projects[] public deployedProjects;
+
+    function createProject() public {
+        Projects newProject = new Projects();
+        deployedProjects.push(newProject);
+    }
+
+    function getDeployedProjects() public view returns (Projects[] memory){
+        return deployedProjects;
+    }
+}
+
+
 contract Projects is Breeze {
 
     using ArraysUtility for *;
@@ -31,7 +47,6 @@ contract Projects is Breeze {
         uint createDate;
         string title;
         mapping(uint => Task) tasks;
-        mapping(uint => string) budgets;
     }
     mapping(uint => Project) projects;
 
@@ -43,10 +58,6 @@ contract Projects is Breeze {
         project.title = _title;
         project.createDate = block.timestamp;
         projectIds.push(projectId);
-    }
-
-    function increaseBudget(uint _projectId , string memory _description) public payable {
-        projects[_projectId].budgets[msg.value] = _description;
     }
 
     function addNewTask(uint _projectId, string memory _title, string memory _description, uint _amount) public ownerOnly{
@@ -85,9 +96,6 @@ contract Projects is Breeze {
 
     function doneTaskStatus(uint _projectId, uint _taskId) internal ownerOnly{
         changeTaskStatusAction(_projectId,_taskId,TaskStatus.DONE);
-        Task memory currentTask = getTaskById(_projectId, _taskId);
-        (bool success, ) = currentTask.assignee.call{value: currentTask.amount}("");
-        require(success, "Transfer failed!");
     }
 
     function deleteTaskById(uint _projectId, uint _taskId) public ownerOnly{
