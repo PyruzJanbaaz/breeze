@@ -1,4 +1,4 @@
-const Projects = artifacts.require("Projects");
+const Projects = artifacts.require("ProjectsFactory");
 
 contract ('Projects', accounts =>{
 
