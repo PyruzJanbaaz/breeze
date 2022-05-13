@@ -1,5 +1,5 @@
-const ProjectsFactory = artifacts.require("ProjectsFactory");
+const ProjectsFactory = artifacts.require('ProjectsFactory')
 
 module.exports = function (deployer) {
-  deployer.deploy(ProjectsFactory);
-};
+  deployer.deploy(ProjectsFactory)
+}
