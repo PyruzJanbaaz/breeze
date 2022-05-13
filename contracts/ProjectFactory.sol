@@ -7,7 +7,7 @@ contract ProjectsFactory {
     Projects[] public deployedProjects;
 
     function createProject() public {
-        Projects newProject = new Projects();
+        Projects newProject = new Projects(msg.sender);
         deployedProjects.push(newProject);
     }
 
