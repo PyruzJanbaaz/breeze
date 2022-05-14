@@ -3,34 +3,13 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "./Breeze.sol";
 import "../libraries/ArraysUtility.sol";
+import {DataTypes} from "../libraries/DataTypes.sol";
 
 contract Projects is Breeze {
     using ArraysUtility for *;
-
-    enum TaskStatus {
-        TODO,
-        DOING,
-        REVIEW,
-        DONE
-    }
+    using DataTypes for *;
     uint256 taskId;
-    struct Task {
-        string title;
-        string description;
-        uint256 createDate;
-        uint256 updateDate;
-        uint256 amount;
-        address assignee;
-        address assigner;
-        TaskStatus status;
-    }
-    struct Project {
-        string title;
-        string description;
-        uint256 createDate;
-        mapping(uint256 => Task) tasks;
-    }
-    Project project;
+    DataTypes.Project project;
 
     constructor(address _owner) Breeze(_owner) {}
 
@@ -60,12 +39,12 @@ contract Projects is Breeze {
         string memory _description,
         uint256 _amount
     ) public ownerOnly {
-        Task storage task = project.tasks[++taskId];
+        DataTypes.Task storage task = project.tasks[++taskId];
         task.assigner = owner;
         task.title = _title;
         task.description = _description;
         task.amount = _amount;
-        task.status = TaskStatus.DOING;
+        task.status = DataTypes.TaskStatus.DOING;
         task.createDate = block.timestamp;
     }
 
@@ -87,20 +66,20 @@ contract Projects is Breeze {
         project.tasks[_taskId].updateDate = block.timestamp;
     }
 
-    function changeTaskStatus(uint256 _taskId, TaskStatus _status) public {
-        if (_status != TaskStatus.DONE)
+    function changeTaskStatus(uint256 _taskId, DataTypes.TaskStatus _status) public {
+        if (_status != DataTypes.TaskStatus.DONE)
             changeTaskStatusAction(_taskId, _status);
         else doneTaskStatus(_taskId);
     }
 
-    function changeTaskStatusAction(uint256 _taskId, TaskStatus _status)
+    function changeTaskStatusAction(uint256 _taskId, DataTypes.TaskStatus _status)
         internal
     {
         project.tasks[_taskId].status = _status;
     }
 
     function doneTaskStatus(uint256 _taskId) internal ownerOnly {
-        changeTaskStatusAction(_taskId, TaskStatus.DONE);
+        changeTaskStatusAction(_taskId, DataTypes.TaskStatus.DONE);
     }
 
     function deleteTaskById(uint256 _taskId) public ownerOnly {
@@ -110,7 +89,7 @@ contract Projects is Breeze {
     function getTaskById(uint256 _taskId)
         public
         view
-        returns (Task memory task)
+        returns (DataTypes.Task memory task)
     {
         return project.tasks[_taskId];
     }
