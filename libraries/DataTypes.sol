@@ -30,12 +30,6 @@ library DataTypes {
         uint256 createDate;
         mapping(uint256 => Task) tasks;
     }
-    struct Team {
-        uint256 projectId;
-        uint256 createDate;
-        string title;
-        address[] teamMembers;
-    }
     struct User {
         string firstName;
         string lastName;
