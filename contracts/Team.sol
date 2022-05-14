@@ -3,18 +3,14 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "./Breeze.sol";
 import "../libraries/ArraysUtility.sol";
+import {DataTypes} from "../libraries/DataTypes.sol";
 
 contract Teams is Breeze {
     using ArraysUtility for *;
+    using DataTypes for *;
 
     uint256 teamId;
-    struct Team {
-        uint256 projectId;
-        uint256 createDate;
-        string title;
-        address[] teamMembers;
-    }
-    mapping(uint256 => Team) teams;
+    mapping(uint256 => DataTypes.Team) teams;
     mapping(uint256 => uint256[]) projectTeams;
 
     constructor() Breeze(msg.sender) {}
@@ -23,7 +19,7 @@ contract Teams is Breeze {
         public
         ownerOnly
     {
-        Team storage team = teams[++teamId];
+        DataTypes.Team storage team = teams[++teamId];
         team.title = _title;
         team.projectId = _projectId;
         team.createDate = block.timestamp;

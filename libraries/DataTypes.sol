@@ -8,6 +8,12 @@ library DataTypes {
         REVIEW,
         DONE
     }
+    enum UserStatus {
+        Active,
+        Inactive,
+        Locked,
+        Pending
+    }
     struct Task {
         string title;
         string description;
@@ -24,11 +30,11 @@ library DataTypes {
         uint256 createDate;
         mapping(uint256 => Task) tasks;
     }
-    enum UserStatus {
-        Active,
-        Inactive,
-        Locked,
-        Pending
+    struct Team {
+        uint256 projectId;
+        uint256 createDate;
+        string title;
+        address[] teamMembers;
     }
     struct User {
         string firstName;
