@@ -1,5 +1,5 @@
-const Projects = artifacts.require("Projects");
+const Project = artifacts.require("Project");
 
 module.exports = function (deployer, network, accounts) {
-  deployer.deploy(Projects, accounts[0]);
+  deployer.deploy(Project, accounts[0]);
 };

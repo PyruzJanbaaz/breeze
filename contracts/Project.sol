@@ -5,7 +5,7 @@ import "./Breeze.sol";
 import "../libraries/ArraysUtility.sol";
 import {DataTypes} from "../libraries/DataTypes.sol";
 
-contract Projects is Breeze {
+contract Project is Breeze {
     using ArraysUtility for *;
     using DataTypes for *;
     uint256 taskId;
