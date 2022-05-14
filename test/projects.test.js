@@ -10,10 +10,10 @@ contract("Projects", (accounts) => {
     DONE: 3,
   };
   before(async () => {
-    const fact = await ProjectsFactory.new();
-    assert(fact.address);
-    await fact.createProject();
-    contractInstance = await Project.at((await fact.getDeployedProjects())[0]);
+    const projectsFactory = await ProjectsFactory.new();
+    assert(projectsFactory.address);
+    await projectsFactory.createProject();
+    contractInstance = await Project.at((await projectsFactory.getDeployedProjects())[0]);
   });
 
   it("add new project", async () => {
@@ -26,7 +26,7 @@ contract("Projects", (accounts) => {
     assert.equal((await contractInstance.getTaskById(1)).title, "task title");
   });
 
-  it("updte a task on the project", async () => {
+  it("update a task on the project", async () => {
     await contractInstance.updateTask(1, "updated title", "descriptoin", 200);
     assert.equal(
       (await contractInstance.getTaskById(1)).title,
