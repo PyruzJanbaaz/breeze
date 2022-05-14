@@ -24,4 +24,16 @@ library DataTypes {
         uint256 createDate;
         mapping(uint256 => Task) tasks;
     }
+    enum UserStatus {
+        Active,
+        Inactive,
+        Locked,
+        Pending
+    }
+    struct User {
+        string firstName;
+        string lastName;
+        string avatar;
+        UserStatus status;
+    }
 }

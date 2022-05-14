@@ -3,23 +3,13 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "./Breeze.sol";
 import "../libraries/ArraysUtility.sol";
+import {DataTypes} from "../libraries/DataTypes.sol";
 
 contract Users is Breeze {
     using ArraysUtility for *;
+    using DataTypes for *;
 
-    enum UserStatus {
-        Active,
-        Inactive,
-        Locked,
-        Pending
-    }
-    struct User {
-        string firstName;
-        string lastName;
-        string avatar;
-        UserStatus status;
-    }
-    mapping(address => User) users;
+    mapping(address => DataTypes.User) users;
     address[] userAddresses;
 
     constructor() Breeze(msg.sender) {}
@@ -30,14 +20,14 @@ contract Users is Breeze {
         string memory _avatar
     ) public {
         require(
-            users[msg.sender].status >= UserStatus(0),
+            users[msg.sender].status >= DataTypes.UserStatus(0),
             "User already is exist!"
         );
-        User storage user = users[msg.sender];
+        DataTypes.User storage user = users[msg.sender];
         user.firstName = _firstName;
         user.lastName = _lastName;
         user.avatar = _avatar;
-        user.status = UserStatus.Pending;
+        user.status = DataTypes.UserStatus.Pending;
         userAddresses.push(msg.sender);
     }
 
@@ -56,7 +46,7 @@ contract Users is Breeze {
     function getUser(address _userAddress)
         public
         view
-        returns (User memory user)
+        returns (DataTypes.User memory user)
     {
         return users[_userAddress];
     }
@@ -74,7 +64,7 @@ contract Users is Breeze {
         userAddresses.deleteItemByIndex(_index);
     }
 
-    function changeUserStatus(address _userAddress, UserStatus _status)
+    function changeUserStatus(address _userAddress, DataTypes.UserStatus _status)
         public
         ownerOnly
     {
@@ -82,6 +72,6 @@ contract Users is Breeze {
     }
 
     function activeUserStatus(address _userAddress) public ownerOnly {
-        users[_userAddress].status = UserStatus.Active;
+        users[_userAddress].status = DataTypes.UserStatus.Active;
     }
 }
