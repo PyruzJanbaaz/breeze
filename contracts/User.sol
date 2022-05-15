@@ -5,7 +5,7 @@ import "./Breeze.sol";
 import "../libraries/ArraysUtility.sol";
 import {DataTypes} from "../libraries/DataTypes.sol";
 
-contract User6_users_migration6_users_migration is Breeze {
+contract User is Breeze {
     using ArraysUtility for *;
     using DataTypes for *;
 

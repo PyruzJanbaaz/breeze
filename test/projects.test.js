@@ -1,5 +1,5 @@
-const ProjectsFactory = artifacts.require("ProjectsFactory");
-const Project = artifacts.require("Projects");
+const ProjectsFactory = artifacts.require("ProjectFactory");
+const Project = artifacts.require("Project");
 
 contract("Projects", (accounts) => {
   let contractInstance = null;
@@ -13,11 +13,27 @@ contract("Projects", (accounts) => {
     const projectsFactory = await ProjectsFactory.new();
     assert(projectsFactory.address);
     await projectsFactory.createProject();
-    contractInstance = await Project.at((await projectsFactory.getDeployedProjects())[0]);
+    contractInstance = await Project.at(
+      (
+        await projectsFactory.getDeployedProjects()
+      )[0]
+    );
   });
 
   it("add new project", async () => {
     await contractInstance.addNewProject("Test1", "Description1");
+    console.log(await web3.eth.getBalance(contractInstance.address));
+    console.log(await web3.eth.getBalance(accounts[1]));
+    await contractInstance.log();
+    await contractInstance.sendTransaction({
+      from: accounts[1],
+      value: web3.utils.toWei("1", "ether"),
+    });
+    await contractInstance.contribute({
+      from: accounts[1],
+      value: web3.utils.toWei("1", "ether"),
+    });
+    console.log(await web3.eth.getBalance(contractInstance.address));
     assert.equal((await contractInstance.getProjectInfo()).title, "Test1");
   });
 

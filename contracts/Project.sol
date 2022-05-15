@@ -13,6 +13,15 @@ contract Project is Breeze {
 
     constructor(address _owner) Breeze(_owner) {}
 
+    receive() external payable {
+        emit Received(msg.sender, msg.value);
+    }
+
+    function contribute() external payable  {
+        require(msg.value > 0, "No Ether were sent.");
+        emit Received(msg.sender, msg.value);
+    }
+
     function addNewProject(string memory _title, string memory _description)
         public
         ownerOnly
@@ -66,15 +75,18 @@ contract Project is Breeze {
         project.tasks[_taskId].updateDate = block.timestamp;
     }
 
-    function changeTaskStatus(uint256 _taskId, DataTypes.TaskStatus _status) public {
+    function changeTaskStatus(uint256 _taskId, DataTypes.TaskStatus _status)
+        public
+    {
         if (_status != DataTypes.TaskStatus.DONE)
             changeTaskStatusAction(_taskId, _status);
         else doneTaskStatus(_taskId);
     }
 
-    function changeTaskStatusAction(uint256 _taskId, DataTypes.TaskStatus _status)
-        internal
-    {
+    function changeTaskStatusAction(
+        uint256 _taskId,
+        DataTypes.TaskStatus _status
+    ) internal {
         project.tasks[_taskId].status = _status;
     }
 
@@ -93,4 +105,5 @@ contract Project is Breeze {
     {
         return project.tasks[_taskId];
     }
+
 }

@@ -1,6 +1,6 @@
-const Users = artifacts.require('Users')
+const User = artifacts.require('User')
 
-contract('Users', (accounts) => {
+contract('User', (accounts) => {
   let contractInstance = null
   const UserStatus = {
     ACTIVE: 0,
@@ -9,7 +9,7 @@ contract('Users', (accounts) => {
     PENDING: 3,
   }
   before(async () => {
-    contractInstance = await Users.deployed()
+    contractInstance = await User.deployed()
   })
 
   it('register user', async () => {
