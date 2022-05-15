@@ -22,9 +22,6 @@ contract("Projects", (accounts) => {
 
   it("add new project", async () => {
     await contractInstance.addNewProject("Test1", "Description1");
-    console.log(await web3.eth.getBalance(contractInstance.address));
-    console.log(await web3.eth.getBalance(accounts[1]));
-    await contractInstance.log();
     await contractInstance.sendTransaction({
       from: accounts[1],
       value: web3.utils.toWei("1", "ether"),
@@ -33,17 +30,16 @@ contract("Projects", (accounts) => {
       from: accounts[1],
       value: web3.utils.toWei("1", "ether"),
     });
-    console.log(await web3.eth.getBalance(contractInstance.address));
     assert.equal((await contractInstance.getProjectInfo()).title, "Test1");
   });
 
   it("add new task on the project", async () => {
-    await contractInstance.addNewTask("task title", "task description", 200);
+    await contractInstance.addNewTask("task title", "task description", web3.utils.toWei("2", "ether"));
     assert.equal((await contractInstance.getTaskById(1)).title, "task title");
   });
 
   it("update a task on the project", async () => {
-    await contractInstance.updateTask(1, "updated title", "descriptoin", 200);
+    await contractInstance.updateTask(1, "updated title", "descriptoin", web3.utils.toWei("1", "ether"));
     assert.equal(
       (await contractInstance.getTaskById(1)).title,
       "updated title"

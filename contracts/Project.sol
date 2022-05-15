@@ -17,7 +17,7 @@ contract Project is Breeze {
         emit Received(msg.sender, msg.value);
     }
 
-    function contribute() external payable  {
+    function contribute() external payable {
         require(msg.value > 0, "No Ether were sent.");
         emit Received(msg.sender, msg.value);
     }
@@ -92,6 +92,11 @@ contract Project is Breeze {
 
     function doneTaskStatus(uint256 _taskId) internal ownerOnly {
         changeTaskStatusAction(_taskId, DataTypes.TaskStatus.DONE);
+        address payable recipient = payable(project.tasks[_taskId].assignee);
+        (bool sent, ) = recipient.call{value: project.tasks[_taskId].amount}(
+            ""
+        );
+        require(sent, "failed to pay memebr's ETH");
     }
 
     function deleteTaskById(uint256 _taskId) public ownerOnly {
@@ -105,5 +110,4 @@ contract Project is Breeze {
     {
         return project.tasks[_taskId];
     }
-
 }
