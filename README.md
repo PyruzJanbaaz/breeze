@@ -1,5 +1,6 @@
 # breeze
-  Breeze is a task management system based on blockchain technology.
+Breeze is a task management system based on blockchain technology.
+  
 Breeze is an MVP of the task management system. Using Breeze, we can create a new project and make tasks with 4 states (TODO, DOING, REVIEW, DONE). 
 The projects can have budgets, so any task which is created by the owner, can have a price. The owner of the project is able to increase the budget of the project whenever he/she wants. also, he/she can update the price of the tasks.
 
