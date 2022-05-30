@@ -8,7 +8,7 @@ import {DataTypes} from "../libraries/DataTypes.sol";
 contract Project is Breeze {
     using ArraysUtility for *;
     using DataTypes for *;
-    uint256 taskId;
+    uint32 taskId;
     DataTypes.Project project;
     string public key;
 
@@ -44,7 +44,7 @@ contract Project is Breeze {
         returns (
             string memory title,
             string memory description,
-            uint256 createDate
+            uint createDate
         )
     {
         return (project.title, project.description, project.createDate);
@@ -65,7 +65,7 @@ contract Project is Breeze {
     }
 
     function updateTask(
-        uint256 _taskId,
+        uint32 _taskId,
         string memory _title,
         string memory _description,
         uint256 _amount
@@ -76,13 +76,13 @@ contract Project is Breeze {
         project.tasks[_taskId].updateDate = block.timestamp;
     }
 
-    function assignTask(uint256 _taskId, address _assignee) public {
+    function assignTask(uint32 _taskId, address _assignee) public {
         project.tasks[_taskId].assignee = _assignee;
         project.tasks[_taskId].assigner = msg.sender;
         project.tasks[_taskId].updateDate = block.timestamp;
     }
 
-    function changeTaskStatus(uint256 _taskId, DataTypes.TaskStatus _status)
+    function changeTaskStatus(uint32 _taskId, DataTypes.TaskStatus _status)
         public
     {
         if (_status != DataTypes.TaskStatus.DONE)
@@ -91,13 +91,13 @@ contract Project is Breeze {
     }
 
     function changeTaskStatusAction(
-        uint256 _taskId,
+        uint32 _taskId,
         DataTypes.TaskStatus _status
     ) internal {
         project.tasks[_taskId].status = _status;
     }
 
-    function doneTaskStatus(uint256 _taskId) internal ownerOnly {
+    function doneTaskStatus(uint32 _taskId) internal ownerOnly {
         changeTaskStatusAction(_taskId, DataTypes.TaskStatus.DONE);
         address payable recipient = payable(project.tasks[_taskId].assignee);
         (bool sent, ) = recipient.call{value: project.tasks[_taskId].amount}(
@@ -106,11 +106,11 @@ contract Project is Breeze {
         require(sent, "failed to pay memebr's ETH");
     }
 
-    function deleteTaskById(uint256 _taskId) public ownerOnly {
+    function deleteTaskById(uint32 _taskId) public ownerOnly {
         delete project.tasks[_taskId];
     }
 
-    function getTaskById(uint256 _taskId)
+    function getTaskById(uint32 _taskId)
         public
         view
         returns (DataTypes.Task memory task)

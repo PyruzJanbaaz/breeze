@@ -39,7 +39,7 @@ contract User is Breeze {
         return userAddresses;
     }
 
-    function getUserCount() public view returns (uint256 count) {
+    function getUserCount() public view returns (uint count) {
         return userAddresses.length;
     }
 
@@ -60,7 +60,7 @@ contract User is Breeze {
         internal
         ownerOnly
     {
-        uint256 _index = userAddresses.findIndexByValue(_userAddress);
+        uint32 _index = userAddresses.findIndexByValue(_userAddress);
         userAddresses.deleteItemByIndex(_index);
     }
 

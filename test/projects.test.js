@@ -12,6 +12,7 @@ contract("Projects", (accounts) => {
   before(async () => {
     const projectsFactory = await ProjectsFactory.new();
     assert(projectsFactory.address);
+    console.log( await projectsFactory.getDeployedProjects("Snadro"));
     await projectsFactory.createProject("Snadro");
     contractInstance = await Project.at(
       await projectsFactory.getDeployedProjects("Snadro")
