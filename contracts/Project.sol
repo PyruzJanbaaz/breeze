@@ -10,8 +10,15 @@ contract Project is Breeze {
     using DataTypes for *;
     uint256 taskId;
     DataTypes.Project project;
+    string public key;
 
-    constructor(address _owner) Breeze(_owner) {}
+    constructor(string memory _key,address _owner) Breeze(_owner) {
+        key = _key;
+    }
+
+    function getProjectKey() public view returns(string memory projectKey) {
+        return key;
+    }
 
     receive() external payable {
         emit Received(msg.sender, msg.value);

@@ -1,17 +1,27 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
 
-import "./Project.sol";
+import {Project} from "./Project.sol";
 
 contract ProjectFactory {
-    Project[] public deployedProjects;
+    mapping(string => Project) deployedProjects;
 
-    function createProject() public {
-        Project newProject = new Project(msg.sender);
-        deployedProjects.push(newProject);
+    function createProject(string memory _key) public {
+        Project project = new Project(_key, msg.sender);
+        // require(
+        //     keccak256(
+        //         abi.encodePacked(deployedProjects[_key].getProjectKey())
+        //     ) != keccak256(abi.encodePacked(_key)),
+        //     "Project key is duplicated!"
+        // );
+        deployedProjects[_key] = project;
     }
 
-    function getDeployedProjects() public view returns (Project[] memory) {
-        return deployedProjects;
+    function getDeployedProjects(string memory _key)
+        public
+        view
+        returns (Project project)
+    {
+        return deployedProjects[_key];
     }
 }

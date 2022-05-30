@@ -12,15 +12,14 @@ contract("Projects", (accounts) => {
   before(async () => {
     const projectsFactory = await ProjectsFactory.new();
     assert(projectsFactory.address);
-    await projectsFactory.createProject();
+    await projectsFactory.createProject("Snadro");
     contractInstance = await Project.at(
-      (
-        await projectsFactory.getDeployedProjects()
-      )[0]
+      await projectsFactory.getDeployedProjects("Snadro")
     );
   });
 
   it("add new project", async () => {
+    console.log(await contractInstance.getProjectKey());
     await contractInstance.addNewProject("Test1", "Description1");
     await contractInstance.sendTransaction({
       from: accounts[1],
@@ -34,12 +33,21 @@ contract("Projects", (accounts) => {
   });
 
   it("add new task on the project", async () => {
-    await contractInstance.addNewTask("task title", "task description", web3.utils.toWei("2", "ether"));
+    await contractInstance.addNewTask(
+      "task title",
+      "task description",
+      web3.utils.toWei("2", "ether")
+    );
     assert.equal((await contractInstance.getTaskById(1)).title, "task title");
   });
 
   it("update a task on the project", async () => {
-    await contractInstance.updateTask(1, "updated title", "descriptoin", web3.utils.toWei("1", "ether"));
+    await contractInstance.updateTask(
+      1,
+      "updated title",
+      "descriptoin",
+      web3.utils.toWei("1", "ether")
+    );
     assert.equal(
       (await contractInstance.getTaskById(1)).title,
       "updated title"

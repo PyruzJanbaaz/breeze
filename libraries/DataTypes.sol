@@ -28,6 +28,7 @@ library DataTypes {
         string title;
         string description;
         uint256 createDate;
+        mapping(uint256 => address) members;
         mapping(uint256 => Task) tasks;
         mapping(uint => uint) budgets;
     }
