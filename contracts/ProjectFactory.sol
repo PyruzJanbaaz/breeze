@@ -2,28 +2,22 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import {Project} from "./Project.sol";
-import "../libraries/ArraysUtility.sol";
 
 contract ProjectFactory {
-    using ArraysUtility for *;
-    mapping(string => Project) deployedProjects;
+    Project[] public deployedProjects;
 
-    function createProject(string memory _key) public {
-        Project project = new Project(_key, msg.sender);
-        require(
-            keccak256(
-                abi.encodePacked(deployedProjects[_key].getProjectKey())
-            ) != keccak256(abi.encodePacked(_key)),
-            "Project key is duplicated!"
-        );
-        deployedProjects[_key] = project;
+    function createProject(string memory _title, string memory _description)
+        public
+    {
+        Project project = new Project(msg.sender, _title, _description);
+        deployedProjects.push(project);
     }
 
-    function getDeployedProjects(string memory _key)
+    function getDeployedProjects()
         public
         view
-        returns (Project project)
+        returns (Project[] memory)
     {
-        return deployedProjects[_key];
+        return deployedProjects;
     }
 }

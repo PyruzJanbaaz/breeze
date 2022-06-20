@@ -12,16 +12,13 @@ contract("Projects", (accounts) => {
   before(async () => {
     const projectsFactory = await ProjectsFactory.new();
     assert(projectsFactory.address);
-    console.log( await projectsFactory.getDeployedProjects("Snadro"));
-    await projectsFactory.createProject("Snadro");
+    await projectsFactory.createProject("Title", "Description");
     contractInstance = await Project.at(
-      await projectsFactory.getDeployedProjects("Snadro")
+       (await projectsFactory.getDeployedProjects())[0]
     );
   });
 
-  it("add new project", async () => {
-    console.log(await contractInstance.getProjectKey());
-    await contractInstance.addNewProject("Test1", "Description1");
+  it("contribute to the project", async () => {
     await contractInstance.sendTransaction({
       from: accounts[1],
       value: web3.utils.toWei("1", "ether"),
@@ -30,7 +27,7 @@ contract("Projects", (accounts) => {
       from: accounts[1],
       value: web3.utils.toWei("1", "ether"),
     });
-    assert.equal((await contractInstance.getProjectInfo()).title, "Test1");
+    assert.equal((await contractInstance.getProjectInfo()).title, "Title");
   });
 
   it("add new task on the project", async () => {

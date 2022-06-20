@@ -10,14 +10,11 @@ contract Project is Breeze {
     using DataTypes for *;
     uint32 taskId;
     DataTypes.Project project;
-    string public key;
 
-    constructor(string memory _key,address _owner) Breeze(_owner) {
-        key = _key;
-    }
-
-    function getProjectKey() public view returns(string memory projectKey) {
-        return key;
+    constructor(address _owner, string memory _title, string memory _description) Breeze(_owner) {
+        project.title = _title;
+        project.description = _description;
+        project.createDate = block.timestamp;
     }
 
     receive() external payable {
@@ -27,15 +24,6 @@ contract Project is Breeze {
     function contribute() external payable {
         require(msg.value > 0, "No Ether were sent.");
         emit Received(msg.sender, msg.value);
-    }
-
-    function addNewProject(string memory _title, string memory _description)
-        public
-        ownerOnly
-    {
-        project.title = _title;
-        project.description = _description;
-        project.createDate = block.timestamp;
     }
 
     function getProjectInfo()

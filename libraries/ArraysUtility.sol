@@ -3,10 +3,10 @@ pragma solidity >=0.7.0 <0.9.0;
 
 library ArraysUtility {
 
-    // MAX_ARRAY_INDEX is a uint32 number  wich is equal to ((2 ^ 32) - 1)
+    // MAX_ARRAY_INDEX is a uint32 number which is equal to ((2 ^ 32) - 1)
     uint32 constant MAX_ARRAY_INDEX = 4294967295;
 
-    function findIndexByValue(uint[] memory _array, uint32 _id) internal pure returns(uint) {
+    function findIndexByValue(uint[] memory _array, uint32 _id) internal pure returns(uint32) {
         uint32 index = MAX_ARRAY_INDEX;
         require (_array.length > 0 , "Array is empty!");
         while (_array[index] != _id) {
